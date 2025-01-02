@@ -8,11 +8,16 @@
 import SwiftUI
 import Charts
 
+enum ChartType {
+    case bar, line, area
+}
+
 struct ContentView: View {
     let dailySales: [DailySalesType]
     let min: Double
     let max: Double
     let barColors: [Color]
+    @State var chartType: ChartType = .bar
     let xAxisMarkPosition: AxisMarkPosition = .bottom
     let yAxisMarkPosition: AxisMarkPosition = .leading
     @State private var isVerticalChart = true
@@ -25,13 +30,58 @@ struct ContentView: View {
             
             Chart {
                 ForEach(dailySales) { item in
-                    BarMark(
-                        x: .value("Day", item.day),
-                        y: .value("Sales", item.sales)
-                    )
-                    .foregroundStyle(by: .value("Day", item.day))
+                    switch chartType {
+                    case .bar:
+                        BarMark(
+                            x: .value("Day", item.day),
+                            y: .value("Sales", item.sales)
+                        )
+                        .foregroundStyle(by: .value("Day", item.day))
+                    case .line:
+                        LineMark(
+                            x: .value("Day", item.day),
+                            y: .value("Sales", item.sales)
+                        )
+                    case .area:
+                        AreaMark(
+                            x: .value("Day", item.day),
+                            y: .value("Sales", item.sales)
+                        )
+                    }
                 }
             }
+            
+            // chart buttons
+            HStack {
+                Button(action: {
+                    withAnimation {
+                        chartType = .bar
+                    }
+                }, label: {
+                    Text("BAR")
+                })
+                
+                Spacer()
+                
+                Button(action: {
+                    withAnimation {
+                        chartType = .line
+                    }
+                }, label: {
+                    Text("LINE")
+                })
+                
+                Spacer()
+                
+                Button(action: {
+                    withAnimation {
+                        chartType = .area
+                    }
+                }, label: {
+                    Text("AREA")
+                })
+            }
+            .padding()
         }
         .padding()
     }
