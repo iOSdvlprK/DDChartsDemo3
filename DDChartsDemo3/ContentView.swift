@@ -30,23 +30,44 @@ struct ContentView: View {
             
             Chart {
                 ForEach(dailySales) { item in
-                    switch chartType {
-                    case .bar:
-                        BarMark(
-                            x: .value("Day", item.day),
-                            y: .value("Sales", item.sales)
-                        )
-                        .foregroundStyle(by: .value("Day", item.day))
-                    case .line:
-                        LineMark(
-                            x: .value("Day", item.day),
-                            y: .value("Sales", item.sales)
-                        )
-                    case .area:
-                        AreaMark(
-                            x: .value("Day", item.day),
-                            y: .value("Sales", item.sales)
-                        )
+                    if isVerticalChart {
+                        switch chartType {
+                        case .bar:
+                            BarMark(
+                                x: .value("Day", item.day),
+                                y: .value("Sales", item.sales)
+                            )
+                            .foregroundStyle(by: .value("Day", item.day))
+                        case .line:
+                            LineMark(
+                                x: .value("Day", item.day),
+                                y: .value("Sales", item.sales)
+                            )
+                        case .area:
+                            AreaMark(
+                                x: .value("Day", item.day),
+                                y: .value("Sales", item.sales)
+                            )
+                        }
+                    } else { // horizontal
+                        switch chartType {
+                        case .bar:
+                            BarMark(
+                                x: .value("Sales", item.sales),
+                                y: .value("Day", item.day)
+                            )
+                            .foregroundStyle(by: .value("Day", item.day))
+                        case .line:
+                            LineMark(
+                                x: .value("Sales", item.sales),
+                                y: .value("Day", item.day)
+                            )
+                        case .area:
+                            AreaMark(
+                                x: .value("Sales", item.sales),
+                                y: .value("Day", item.day)
+                            )
+                        }
                     }
                 }
             }
@@ -79,6 +100,17 @@ struct ContentView: View {
                     }
                 }, label: {
                     Text("AREA")
+                })
+                
+                Spacer()
+                
+                Button(action: {
+                    withAnimation {
+                        isVerticalChart.toggle()
+                    }
+                }, label: {
+                    Image(systemName: "chart.bar.fill")
+                        .rotationEffect(.degrees(isVerticalChart ? 90 : 0))
                 })
             }
             .padding()
