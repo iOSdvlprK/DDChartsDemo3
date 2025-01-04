@@ -16,7 +16,7 @@ struct ContentView: View {
     let dailySales: [DailySalesType]
     let min: Double
     let max: Double
-    let barColors: [Color]
+    @State var barColors: [Color] = defaultBarColors
     @State var chartType: ChartType = .bar
     let xAxisMarkPosition: AxisMarkPosition = .bottom
     let yAxisMarkPosition: AxisMarkPosition = .leading
@@ -74,6 +74,15 @@ struct ContentView: View {
             
             // chart buttons
             HStack {
+                ColorfulButtonView(
+                    colors: $barColors,
+                    dim: 30,
+                    offset: 10,
+                    action: {}
+                )
+                
+                Spacer()
+                
                 Button(action: {
                     withAnimation {
                         chartType = .bar
@@ -123,7 +132,6 @@ struct ContentView: View {
     ContentView(
         dailySales: defaultDailySales,
         min: 0.0,
-        max: 700.0,
-        barColors: defaultBarColors
+        max: 700.0
     )
 }
