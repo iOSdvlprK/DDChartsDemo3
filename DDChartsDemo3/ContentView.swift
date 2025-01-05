@@ -28,47 +28,23 @@ struct ContentView: View {
                 .font(.largeTitle)
                 .fontWeight(.semibold)
             
-            Chart {
-                ForEach(dailySales) { item in
-                    if isVerticalChart {
-                        switch chartType {
-                        case .bar:
-                            BarMark(
-                                x: .value("Day", item.day),
-                                y: .value("Sales", item.sales)
-                            )
-                            .foregroundStyle(by: .value("Day", item.day))
-                        case .line:
-                            LineMark(
-                                x: .value("Day", item.day),
-                                y: .value("Sales", item.sales)
-                            )
-                        case .area:
-                            AreaMark(
-                                x: .value("Day", item.day),
-                                y: .value("Sales", item.sales)
-                            )
-                        }
-                    } else { // horizontal
-                        switch chartType {
-                        case .bar:
-                            BarMark(
-                                x: .value("Sales", item.sales),
-                                y: .value("Day", item.day)
-                            )
-                            .foregroundStyle(by: .value("Day", item.day))
-                        case .line:
-                            LineMark(
-                                x: .value("Sales", item.sales),
-                                y: .value("Day", item.day)
-                            )
-                        case .area:
-                            AreaMark(
-                                x: .value("Sales", item.sales),
-                                y: .value("Day", item.day)
-                            )
-                        }
-                    }
+            if isVerticalChart {
+                switch chartType {
+                case .bar:
+                    BarChartVerticalView(dailySales: dailySales)
+                case .line:
+                    LineChartVerticalView(dailySales: dailySales)
+                case .area:
+                    AreaChartVerticalView(dailySales: dailySales)
+                }
+            } else { // horizontal
+                switch chartType {
+                case .bar:
+                    BarChartHorizontalView(dailySales: dailySales)
+                case .line:
+                    LineChartHorizontalView(dailySales: dailySales)
+                case .area:
+                    AreaChartHorizontalView(dailySales: dailySales)
                 }
             }
             
