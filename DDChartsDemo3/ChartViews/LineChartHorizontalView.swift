@@ -10,6 +10,7 @@ import Charts
 
 struct LineChartHorizontalView: View {
     let dailySales: [DailySalesType]
+    let barColors: [Color]
     
     var body: some View {
         Chart {
@@ -20,9 +21,10 @@ struct LineChartHorizontalView: View {
                 )
             }
         }
+        .chartForegroundStyleScale(range: barColors)
     }
 }
 
 #Preview {
-    LineChartHorizontalView(dailySales: defaultDailySales)
+    LineChartHorizontalView(dailySales: defaultDailySales, barColors: defaultBarColors)
 }
